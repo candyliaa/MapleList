@@ -40,8 +40,28 @@
                 </div>
             </div>
         </div>
-        <div id="reset-time" class="flex justify-center">
-            <h2>Reset Times</h2>
+        <div>
+            <div class="grid gap-5 grid-cols-3 grid-rows-3">
+                <h2 class="col-start-2">Reset Times</h2>
+                <h3 class="row-start-2">Daily Reset</h3>
+                <h3 class="row-start-2">Weekly Reset (Thursday)</h3>
+                <h3 class="row-start-2">Weekly Reset (Monday)</h3>
+                <span class="countdown font-mono text-2xl row-start-3">
+                    <span style="--value:00;"></span>h
+                    <span style="--value:00;"></span>m
+                    <span style="--value:00;"></span>s
+                </span>
+                <span class="countdown font-mono text-2xl row-start-3">
+                    <span style="--value:00;"></span>h
+                    <span style="--value:00;"></span>m
+                    <span style="--value:00;"></span>s
+                </span>
+                <span class="countdown font-mono text-2xl row-start-3">
+                    <span style="--value:00;"></span>h
+                    <span style="--value:00;"></span>m
+                    <span style="--value:00;"></span>s
+                </span>
+            </div>
         </div>
     </div>
   </div>
@@ -65,16 +85,5 @@
     </label>
   </template> 
   <script src="templateData.js"></script>
-
-  <template id="reset-time">
-    <div class="grid gap-5 grid-cols-2">
-        <div>
-            <h2>TITLE</h2>
-            <span class="countdown">
-                <span style="--value:70;"></span>
-            </span>
-        </div>
-    </div>
-  </template>
 </body>
 </html>

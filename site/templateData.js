@@ -66,9 +66,13 @@ function addContent(content, idNode) {
 addContent(dailies, dailiesNode);
 addContent(weeklies, weekliesNode);
 
-const currentTime = new Date();
-const resetTime = new Date(0, 0, 0, 0, 0)
-const timeUntilReset = resetTime.getSeconds() - currentTime.getSeconds()
-if (timeUntilReset <= 0) {
-    
-}
+const midnight = new Date();
+midnight.setHours(24);
+midnight.setMinutes(0);
+midnight.setSeconds(0);
+midnight.setMilliseconds(0);
+timeUntilReset = Math.floor((midnight.getTime() - new Date().getTime()) / 1000)
+const seconds = timeUntilReset % 60
+const minutes = Math.floor((timeUntilReset / 60) % 60)
+const hours = Math.floor(timeUntilReset / 60 / 60)
+console.log(hours, minutes, seconds)
