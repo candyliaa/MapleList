@@ -5,6 +5,25 @@
   <meta charset="utf-8">
   <title>MapleList</title>
   <link href="style.css" rel="stylesheet" type="text/css" />
+  <template id="category-template">
+    <div class="collapse bg-base-200">
+      <input type="checkbox" />
+      <div class="collapse-title text-xl font-medium">
+        TITLE
+      </div>
+      <div class="collapse-content">
+        <div class="form-control max-w-48">
+        </div>
+      </div>
+    </div>
+  </template>
+
+  <template id="entry-template">
+    <label class="cursor-pointer label">
+        <span class="label-text prose-lg">ENTRY</span>
+        <input type="checkbox" class="checkbox" />
+    </label>
+  </template> 
   <script src="https://cdn.tailwindcss.com?plugins=typography"></script>
   <link href="https://cdn.jsdelivr.net/npm/daisyui@4.11.1/dist/full.min.css" rel="stylesheet" type="text/css" />
 </head>
@@ -14,79 +33,8 @@
     <div class="prose max-w-none">
         <h1>MapleList - a MapleStory daily / weekly chore list</h1>
         <div class="grid gap-4 grid-cols-3">
-            <div>
+            <div id="dailies">
                 <h2>Dailies</h2>
-                <div class="collapse bg-base-200">
-                    <input type="checkbox" />
-                    <div class="collapse-title text-xl font-medium">
-                        Arcane River Dailies
-                    </div>
-                    <div class="collapse-content">
-                        <div class="list-none max-w-48">           
-                            <div class="form-control">
-                                <label class="cursor-pointer label">
-                                    <span class="label-text prose-lg">Vanishing Journey</span>
-                                    <input type="checkbox" class="checkbox" />
-                                </label>
-
-                                <label class="cursor-pointer label">
-                                    <span class="label-text prose-lg">Chu-Chu Island</span>
-                                    <input type="checkbox" class="checkbox" />
-                                </label>
-
-                                <label class="cursor-pointer label">
-                                    <span class="label-text prose-lg">Lachelein</span>
-                                    <input type="checkbox" class="checkbox" />
-                                </label>
-
-                                <label class="cursor-pointer label">
-                                    <span class="label-text prose-lg">Arcana</span>
-                                    <input type="checkbox" class="checkbox" />
-                                </label>
-
-                                <label class="cursor-pointer label">
-                                    <span class="label-text prose-lg">Morass</span>
-                                    <input type="checkbox" class="checkbox" />
-                                </label>
-
-                                <label class="cursor-pointer label">
-                                    <span class="label-text prose-lg">Esfera</span>
-                                    <input type="checkbox" class="checkbox" />
-                                </label>
-
-                                <label class="cursor-pointer label">
-                                    <span class="label-text prose-lg">Moonbridge</span>
-                                    <input type="checkbox" class="checkbox" />
-                                </label>
-
-                                <label class="cursor-pointer label">
-                                    <span class="label-text prose-lg">Monster Park</span>
-                                    <input type="checkbox" class="checkbox" />
-                                </label>
-
-                                <label class="cursor-pointer label">
-                                    <span class="label-text prose-lg">Maple Tour</span>
-                                    <input type="checkbox" class="checkbox" />
-                                </label>
-
-                                <label class="cursor-pointer label">
-                                    <span class="label-text prose-lg">Ursus</span>
-                                    <input type="checkbox" class="checkbox" />
-                                </label>
-
-                                <label class="cursor-pointer label">
-                                    <span class="label-text prose-lg">Profession Stamina</span>
-                                    <input type="checkbox" class="checkbox" />
-                                </label>
-
-                                <label class="cursor-pointer label">
-                                    <span class="label-text prose-lg">Threads of Fate</span>
-                                    <input type="checkbox" class="checkbox" />
-                                </label>
-                            </div>
-                        </div>
-                    </div>
-                </div>
             </div>
             <div>
                 <h2>Weeklies</h2>
@@ -128,7 +76,6 @@
             </div>
         </div>
     </div>
-    
-  </div> 
+  </div>
 </body>
 </html>
