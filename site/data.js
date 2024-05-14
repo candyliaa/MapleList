@@ -2,7 +2,8 @@ const categoryTemplate = document.querySelector("#category-template");
 const entryTemplate = document.querySelector("#entry-template");
 
 const dailiesNode = document.querySelector("#dailies");
-const weekliesNode = document.querySelector("#weeklies");
+const weekliesThursNode = document.querySelector("#weeklies-thurs");
+const weekliesMonNode = document.querySelector("#weeklies-mon");
 
 const dailies = [
     {
@@ -27,22 +28,42 @@ const dailies = [
         
 ];
 
-const weeklies = [
-    {
-        title: "Arcane River Weeklies",
-        subContent: ["Vanishing Journey", "Chu-Chu Island", "Lachelein", "Arcana", "Morass", "Esfera"],
-    },
-
+const weekliesThurs = [
     {
         title: "Bosses",
         subContent: ["C. Zakum", "HMagnus", "HHilla", "HPapulatus", "C. Pierre", "C. Von Bon", "C. Crimson Queen", "C. Pink Bean", "Cygnus", "Lotus", "Damien", "Guardian Angel Slime", "Lucid", "Will", "Gloom", "VHilla", "PNo", "Akechi"],
     },
+];
+
+const weekliesMon = [
+    {
+        title: "Arcane River Weeklies",
+        subContent: ["Vanishing Journey", "Chu-Chu Island", "Lachelein", "Arcana", "Morass", "Esfera"]
+    },
 
     {
         title: "Misc.",
-        subContent: ["Scrapyard Weeklies", "Dark World Tree Weeklies", "Culvert", "Event Weeklies"],
+        subContent: ["Scrapyard", "Dark World Tree", "Culvert", "Flag Race", "Mu Lung Dojo"]
     },
 ];
+
+
+function updateEntryState(type, entry, newState) {
+    const stateJSON = localStorage.getItem(type);
+    const state = stateJSON ? JSON.parse(stateJSON) : {};
+    state[entry] = newState;
+    localStorage.setItem(type, JSON.stringify(state));
+}
+
+function getEntryState(type, entry) {
+    const stateJSON = localStorage.getItem(type);
+    const state = stateJSON ? JSON.parse(stateJSON) : {};
+    return state[entry] === true;
+}
+
+function clearState(type) {
+    localStorage.removeItem(type);
+}
 
 function addContent(content, idNode, type) {
     for (const attribute of content) {
@@ -51,22 +72,20 @@ function addContent(content, idNode, type) {
         const formControlNode = categoryNode.querySelector(".form-control");
         const categoryCheckboxNode = categoryNode.querySelector(".category-checkbox");
         categoryCheckboxNode.addEventListener("change", (event) => {
-            localStorage.setItem(`${type}-${attribute.title}`, event.target.checked);
+            updateEntryState(type, attribute.title, event.target.checked);
         });
 
-        const state = localStorage.getItem(`${type}-${attribute.title}`);
-        categoryCheckboxNode.checked = state === "true";
+        categoryCheckboxNode.checked = getEntryState(type, attribute.title);
 
         titleNode.textContent = attribute.title
         for (const entry of attribute.subContent) {
             const entryNode = entryTemplate.content.cloneNode(true);
             const checkbox = entryNode.querySelector("input[type='checkbox']")
             checkbox.addEventListener("change", (event) => {
-                localStorage.setItem(`${type}-${entry}`, event.target.checked);
+                updateEntryState(type, entry, event.target.checked);
             });
 
-            const state = localStorage.getItem(`${type}-${entry}`);
-            checkbox.checked = state === "true";
+            checkbox.checked = getEntryState(type, entry);
 
             const spanNode = entryNode.querySelector("span");
             spanNode.textContent = entry;
@@ -79,7 +98,8 @@ function addContent(content, idNode, type) {
 }
 
 addContent(dailies, dailiesNode, "daily");
-addContent(weeklies, weekliesNode, "weekly");
+addContent(weekliesThurs, weekliesThursNode, "weekly-thurs");
+addContent(weekliesMon, weekliesMonNode, "weekly-mon");
 
 function updateCountdown(resetTime, type) {
     const daysNode = document.querySelector(`#${type}-days`);
@@ -101,23 +121,40 @@ function updateCountdown(resetTime, type) {
     hoursNode.style = `--value:${hours}`;
     minutesNode.style = `--value:${minutes}`;
     secondsNode.style = `--value:${seconds}`;
+
+    return timeUntilReset;
 }
+
+let lastTimeUntilDailyReset = Infinity
+let lastTimeUntilThursReset = Infinity
+let lastTimeUntilMonReset = Infinity
 
 setInterval(() => {
     const midnight = new Date();
     midnight.setHours(24, 0, 0, 0);
-    updateCountdown(midnight, "daily");
-    
+    let timeTillReset = updateCountdown(midnight, "daily");
+    if (timeTillReset > lastTimeUntilDailyReset) {
+        clearState("daily");
+    }
+    lastTimeUntilDailyReset = timeTillReset
+
     const thursReset = new Date();
     thursReset.setDate(thursReset.getDate() + 4 - thursReset.getDay());
     thursReset.setUTCHours(0, 0, 0, 0);
     console.log("thursday reset:", thursReset);
-    updateCountdown(thursReset, "weekly1")
+    timeTillReset = updateCountdown(thursReset, "weekly1");
+    if (timeTillReset > lastTimeUntilThursReset) {
+        clearState("weekly-thurs");
+    }
     
     const monReset = new Date();
     monReset.setDate(monReset.getDate() + 8 - monReset.getDay());
-    monReset.setUTCHours(0, 0, 0, 0)
+    monReset.setUTCHours(0, 0, 0, 0);
     console.log("monday reset:", monReset);
-    updateCountdown(monReset, "weekly2")
+    timeTillReset = updateCountdown(monReset, "weekly2");
+    if (timeTillReset > lastTimeUntilMonReset) {
+        clearState("weekly-mon");
+    }
+
 }, 500);
 
