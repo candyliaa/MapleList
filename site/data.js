@@ -44,15 +44,30 @@ const weeklies = [
     },
 ];
 
-function addContent(content, idNode) {
-    for (attribute of content) {
+function addContent(content, idNode, type) {
+    for (const attribute of content) {
         const categoryNode = categoryTemplate.content.cloneNode(true);
         const titleNode = categoryNode.querySelector(".collapse-title");
         const formControlNode = categoryNode.querySelector(".form-control");
+        const categoryCheckboxNode = categoryNode.querySelector(".category-checkbox");
+        categoryCheckboxNode.addEventListener("change", (event) => {
+            localStorage.setItem(`${type}-${attribute.title}`, event.target.checked);
+        });
+
+        const state = localStorage.getItem(`${type}-${attribute.title}`);
+        categoryCheckboxNode.checked = state === "true";
 
         titleNode.textContent = attribute.title
         for (const entry of attribute.subContent) {
             const entryNode = entryTemplate.content.cloneNode(true);
+            const checkbox = entryNode.querySelector("input[type='checkbox']")
+            checkbox.addEventListener("change", (event) => {
+                localStorage.setItem(`${type}-${entry}`, event.target.checked);
+            });
+
+            const state = localStorage.getItem(`${type}-${entry}`);
+            checkbox.checked = state === "true";
+
             const spanNode = entryNode.querySelector("span");
             spanNode.textContent = entry;
     
@@ -63,8 +78,8 @@ function addContent(content, idNode) {
     }
 }
 
-addContent(dailies, dailiesNode);
-addContent(weeklies, weekliesNode);
+addContent(dailies, dailiesNode, "daily");
+addContent(weeklies, weekliesNode, "weekly");
 
 const midnight = new Date();
 midnight.setHours(24);
