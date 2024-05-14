@@ -13,6 +13,37 @@
   <div class="container prose mx-auto max-w-screen-lg">
     <div class="prose max-w-none">
         <h1>MapleList - a MapleStory daily / weekly chore list</h1>
+        <div>
+            <div class="grid gap-5 grid-cols-3 grid-rows-[50px_1fr] place-items-center">
+                <h2 class="col-start-2">Reset Times</h2>      
+                <div class="row-start-2 flex flex-col items-center">
+                    <h3 class="row-start-2 my-0">Daily Reset</h3>
+                    <span class="countdown font-mono text-2xl">
+                        <span style="--value:00;" id="daily-hours"></span>h
+                        <span style="--value:00;" id="daily-minutes"></span>m
+                        <span style="--value:00;" id="daily-seconds"></span>s
+                    </span>
+                </div>
+                <div class="row-start-2 flex flex-col items-center">
+                    <h3 class="row-start-2 my-0">Weekly Reset (Thursday)</h3>
+                    <span class="countdown font-mono text-2xl">
+                        <span style="--value:00;" id="weekly1-days"></span>d
+                        <span style="--value:00;" id="weekly1-hours"></span>h
+                        <span style="--value:00;" id="weekly1-minutes"></span>m
+                        <span style="--value:00;" id="weekly1-seconds"></span>s
+                    </span>
+                </div>
+                <div class="row-start-2 flex flex-col items-center">
+                    <h3 class="row-start-2 my-0">Weekly Reset (Monday)</h3>
+                    <span class="countdown font-mono text-2xl">
+                        <span style="--value:00;" id="weekly2-days"></span>d
+                        <span style="--value:00;" id="weekly2-hours"></span>h
+                        <span style="--value:00;" id="weekly2-minutes"></span>m
+                        <span style="--value:00;" id="weekly2-seconds"></span>s
+                    </span>
+                </div>
+            </div>
+        </div>
         <div class="grid gap-5 grid-cols-3">
             <div id="dailies">
                 <h2 class="ml-3">Dailies</h2>
@@ -37,35 +68,6 @@
                             </div>
                         </div>
                     </div>
-                </div>
-            </div>
-        </div>
-        <div>
-            <div class="grid gap-5 grid-cols-3 grid-rows-3 place-items-center">
-                <h2 class="col-start-2">Reset Times</h2>      
-                <div class="row-start-2 flex flex-col items-center">
-                    <h3 class="row-start-2 my-0">Daily Reset</h3>
-                    <span class="countdown font-mono text-2xl row-start-3">
-                        <span style="--value:00;"></span>h
-                        <span style="--value:00;"></span>m
-                        <span style="--value:00;"></span>s
-                    </span>
-                </div>
-                <div class="row-start-2 flex flex-col items-center">
-                    <h3 class="row-start-2 my-0">Weekly Reset (Thursday)</h3>
-                    <span class="countdown font-mono text-2xl row-start-3">
-                        <span style="--value:00;"></span>h
-                        <span style="--value:00;"></span>m
-                        <span style="--value:00;"></span>s
-                    </span>
-                </div>
-                <div class="row-start-2 flex flex-col items-center">
-                    <h3 class="row-start-2 my-0">Weekly Reset (Monday)</h3>
-                    <span class="countdown font-mono text-2xl row-start-3">
-                        <span style="--value:00;"></span>h
-                        <span style="--value:00;"></span>m
-                        <span style="--value:00;"></span>s
-                    </span>
                 </div>
             </div>
         </div>

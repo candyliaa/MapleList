@@ -81,13 +81,43 @@ function addContent(content, idNode, type) {
 addContent(dailies, dailiesNode, "daily");
 addContent(weeklies, weekliesNode, "weekly");
 
-const midnight = new Date();
-midnight.setHours(24);
-midnight.setMinutes(0);
-midnight.setSeconds(0);
-midnight.setMilliseconds(0);
-timeUntilReset = Math.floor((midnight.getTime() - new Date().getTime()) / 1000)
-const seconds = timeUntilReset % 60
-const minutes = Math.floor((timeUntilReset / 60) % 60)
-const hours = Math.floor(timeUntilReset / 60 / 60)
-console.log(hours, minutes, seconds)
+function updateCountdown(resetTime, type) {
+    const daysNode = document.querySelector(`#${type}-days`);
+    const hoursNode = document.querySelector(`#${type}-hours`);
+    const minutesNode = document.querySelector(`#${type}-minutes`);
+    const secondsNode = document.querySelector(`#${type}-seconds`);
+
+    const now = new Date();
+    const timeUntilReset = Math.floor((resetTime - now) / 1000);
+    const seconds = timeUntilReset % 60;
+    const minutes = Math.floor((timeUntilReset / 60) % 60);
+    const hours = Math.floor(timeUntilReset / 60 / 60) % 24;
+    const days = Math.floor(timeUntilReset / 60 / 60 / 24);
+    console.log(days);
+
+    if (type !== "daily") {
+        daysNode.style = `--value:${days}`;
+    }
+    hoursNode.style = `--value:${hours}`;
+    minutesNode.style = `--value:${minutes}`;
+    secondsNode.style = `--value:${seconds}`;
+}
+
+setInterval(() => {
+    const midnight = new Date();
+    midnight.setHours(24, 0, 0, 0);
+    updateCountdown(midnight, "daily");
+    
+    const thursReset = new Date();
+    thursReset.setDate(thursReset.getDate() + 4 - thursReset.getDay());
+    thursReset.setUTCHours(0, 0, 0, 0);
+    console.log("thursday reset:", thursReset);
+    updateCountdown(thursReset, "weekly1")
+    
+    const monReset = new Date();
+    monReset.setDate(monReset.getDate() + 8 - monReset.getDay());
+    monReset.setUTCHours(0, 0, 0, 0)
+    console.log("monday reset:", monReset);
+    updateCountdown(monReset, "weekly2")
+}, 500);
+
