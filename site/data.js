@@ -122,7 +122,6 @@ function updateCountdown(resetTime, type) {
     if (resetTime < now) {
         timeUntilReset = 0;
     }
-    const seconds = timeUntilReset % 60;
     const minutes = Math.floor((timeUntilReset / 60) % 60);
     const hours = Math.floor(timeUntilReset / 60 / 60) % 24;
     const days = Math.floor(timeUntilReset / 60 / 60 / 24);
@@ -132,7 +131,6 @@ function updateCountdown(resetTime, type) {
     }
     hoursNode.style = `--value:${hours}`;
     minutesNode.style = `--value:${minutes}`;
-    secondsNode.style = `--value:${seconds}`;
 
     return timeUntilReset;
 }
