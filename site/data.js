@@ -4,6 +4,11 @@ const entryTemplate = document.querySelector("#entry-template");
 const dailiesNode = document.querySelector("#dailies");
 const weekliesThursNode = document.querySelector("#weeklies-thurs");
 const weekliesMonNode = document.querySelector("#weeklies-mon");
+const checkboxes = {
+    "daily": [],
+    "weekly-thurs": [],
+    "weekly-mon": [],
+};
 
 const dailies = [
     {
@@ -63,6 +68,9 @@ function getEntryState(type, entry) {
 
 function clearState(type) {
     localStorage.removeItem(type);
+    for (const checkbox of checkboxes[type]) {
+        checkbox.checked = false;
+    }
 }
 
 function addContent(content, idNode, type) {
@@ -80,12 +88,14 @@ function addContent(content, idNode, type) {
         titleNode.textContent = attribute.title
         for (const entry of attribute.subContent) {
             const entryNode = entryTemplate.content.cloneNode(true);
-            const checkbox = entryNode.querySelector("input[type='checkbox']")
-            checkbox.addEventListener("change", (event) => {
+            const checkboxNode = entryNode.querySelector("input[type='checkbox']")
+            checkboxes[type].push(checkboxNode);
+
+            checkboxNode.addEventListener("change", (event) => {
                 updateEntryState(type, entry, event.target.checked);
             });
 
-            checkbox.checked = getEntryState(type, entry);
+            checkboxNode.checked = getEntryState(type, entry);
 
             const spanNode = entryNode.querySelector("span");
             spanNode.textContent = entry;
@@ -108,12 +118,14 @@ function updateCountdown(resetTime, type) {
     const secondsNode = document.querySelector(`#${type}-seconds`);
 
     const now = new Date();
-    const timeUntilReset = Math.floor((resetTime - now) / 1000);
+    let timeUntilReset = Math.floor((resetTime - now) / 1000);
+    if (resetTime < now) {
+        timeUntilReset = 0;
+    }
     const seconds = timeUntilReset % 60;
     const minutes = Math.floor((timeUntilReset / 60) % 60);
     const hours = Math.floor(timeUntilReset / 60 / 60) % 24;
     const days = Math.floor(timeUntilReset / 60 / 60 / 24);
-    console.log(days);
 
     if (type !== "daily") {
         daysNode.style = `--value:${days}`;
@@ -131,7 +143,7 @@ let lastTimeUntilMonReset = Infinity
 
 setInterval(() => {
     const midnight = new Date();
-    midnight.setHours(24, 0, 0, 0);
+    midnight.setUTCHours(24, 0, 0, 0);
     let timeTillReset = updateCountdown(midnight, "daily");
     if (timeTillReset > lastTimeUntilDailyReset) {
         clearState("daily");
@@ -139,9 +151,8 @@ setInterval(() => {
     lastTimeUntilDailyReset = timeTillReset
 
     const thursReset = new Date();
-    thursReset.setDate(thursReset.getDate() + 4 - thursReset.getDay());
+    thursReset.setDate(thursReset.getDate() + 5 - thursReset.getDay());
     thursReset.setUTCHours(0, 0, 0, 0);
-    console.log("thursday reset:", thursReset);
     timeTillReset = updateCountdown(thursReset, "weekly1");
     if (timeTillReset > lastTimeUntilThursReset) {
         clearState("weekly-thurs");
@@ -150,7 +161,6 @@ setInterval(() => {
     const monReset = new Date();
     monReset.setDate(monReset.getDate() + 8 - monReset.getDay());
     monReset.setUTCHours(0, 0, 0, 0);
-    console.log("monday reset:", monReset);
     timeTillReset = updateCountdown(monReset, "weekly2");
     if (timeTillReset > lastTimeUntilMonReset) {
         clearState("weekly-mon");
