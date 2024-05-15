@@ -78,11 +78,11 @@
   <template id="category-template">
     <div class="collapse bg-base-200 mt-2">
       <input type="checkbox" class="category-checkbox" />
-      <div class="collapse-title text-xl font-medium">
-        TITLE
+      <div class="collapse-title text-xl font-medium flex flex-row items-center">
+        <img src="" height="50" width="50" class="my-0 mr-5"/><span class="category-title">TITLE</span>
       </div>
       <div class="collapse-content">
-        <div class="form-control max-w-48">
+        <div class="form-control max-w-72">
         </div>
       </div>
     </div>
@@ -90,6 +90,7 @@
 
   <template id="entry-template">
     <label class="cursor-pointer label">
+        <img src="" height="50" width="50"/>
         <span class="label-text prose-lg">ENTRY</span>
         <input type="checkbox" class="checkbox"/>
     </label>
