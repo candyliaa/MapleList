@@ -122,11 +122,6 @@ addContent(dailies, dailiesNode, "daily");
 addContent(weekliesThurs, weekliesThursNode, "weekly-thurs");
 addContent(weekliesMon, weekliesMonNode, "weekly-mon");
 
-let others = JSON.parse(localStorage.getItem("userCategories"));
-if (others === null) {
-    localStorage.setItem("userCategories", JSON.stringify([]));
-};
-
 addedCategoryNode = document.querySelector("#add-category");
 inputCategoryNode = document.querySelector("#category-input");
 addedCategoryNode.addEventListener("submit", (event) => {
@@ -137,6 +132,12 @@ addedCategoryNode.addEventListener("submit", (event) => {
     addOthersCategory(categoryName);
 });
 
+function updateOthersCategoryList(categoryName) {
+    const categories = JSON.parse(localStorage.getItem("userCategories"));
+    categories.push({title: {name: categoryName, image: ""}, subContent: []});
+    localStorage.setItem("userCategories", JSON.stringify(categories));
+}
+
 function addOthersCategory(categoryName) {
     const categoryNode = categoryTemplate.content.cloneNode(true);
     const titleNode = categoryNode.querySelector(".category-title");
@@ -144,13 +145,15 @@ function addOthersCategory(categoryName) {
     const img = categoryNode.querySelector("img");
     img.remove();
     othersNode.appendChild(categoryNode);
-    const categories = JSON.parse(localStorage.getItem("userCategories"));
-    categories.push({title: {name: categoryName, image: ""}, subContent: []});
-    localStorage.setItem("userCategories", JSON.stringify(categories));
-};
+    updateOthersCategoryList(categoryName);
+}
 
-const categories = JSON.parse(localStorage.getItem("userCategories"));
-addContent(categories, othersNode, "others");
+let others = JSON.parse(localStorage.getItem("userCategories"));
+if (others === null) {
+    localStorage.setItem("userCategories", JSON.stringify([]));
+} else {
+    addContent(others, othersNode, "others");
+}
 
 function updateCountdown(resetTime, type) {
     const daysNode = document.querySelector(`#${type}-days`);
@@ -178,9 +181,9 @@ function updateCountdown(resetTime, type) {
     return timeUntilReset;
 }
 
-let lastTimeUntilDailyReset = Infinity
-let lastTimeUntilThursReset = Infinity
-let lastTimeUntilMonReset = Infinity
+let lastTimeUntilDailyReset = Infinity;
+let lastTimeUntilThursReset = Infinity;
+let lastTimeUntilMonReset = Infinity;
 
 setInterval(() => {
     const midnight = new Date();
@@ -189,7 +192,7 @@ setInterval(() => {
     if (timeTillReset > lastTimeUntilDailyReset) {
         clearState("daily");
     }
-    lastTimeUntilDailyReset = timeTillReset
+    lastTimeUntilDailyReset = timeTillReset;
 
     const thursReset = new Date();
     thursReset.setUTCDate(thursReset.getUTCDate() + 4 - thursReset.getUTCDay());
@@ -215,7 +218,7 @@ setInterval(() => {
     if (timeTillReset > lastTimeUntilMonReset) {
         clearState("weekly-mon");
     }
-    lastTimeUntilMonReset = timeTillReset
+    lastTimeUntilMonReset = timeTillReset;
 
 }, 500);
 
