@@ -7,3 +7,9 @@ ul.remove-dot {
 input[type="checkbox"] {
     vertical-align: middle
 }
+
+input[type="text"] {
+    width: 328px;
+    height: 90px;
+    border-radius: 17px;
+}

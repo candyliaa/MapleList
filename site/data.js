@@ -4,10 +4,12 @@ const entryTemplate = document.querySelector("#entry-template");
 const dailiesNode = document.querySelector("#dailies");
 const weekliesThursNode = document.querySelector("#weeklies-thurs");
 const weekliesMonNode = document.querySelector("#weeklies-mon");
+const othersNode = document.querySelector("#others");
 const checkboxes = {
     "daily": [],
     "weekly-thurs": [],
     "weekly-mon": [],
+    "others": [],
 };
 
 const dailies = [
@@ -52,7 +54,6 @@ const weekliesMon = [
     },
 ];
 
-
 function updateEntryState(type, entry, newState) {
     const stateJSON = localStorage.getItem(type);
     const state = stateJSON ? JSON.parse(stateJSON) : {};
@@ -84,9 +85,12 @@ function addContent(content, idNode, type) {
         });
 
         categoryCheckboxNode.checked = getEntryState(type, attribute.title.name);
-
         const categoryImageNode = categoryNode.querySelector("img");
         categoryImageNode.src = attribute.title.image;
+
+        if (type === "others") {
+            categoryImageNode.remove();
+        }
 
         titleNode.textContent = attribute.title.name;
 
@@ -117,6 +121,39 @@ function addContent(content, idNode, type) {
 addContent(dailies, dailiesNode, "daily");
 addContent(weekliesThurs, weekliesThursNode, "weekly-thurs");
 addContent(weekliesMon, weekliesMonNode, "weekly-mon");
+
+let others = JSON.parse(localStorage.getItem("userCategories"));
+console.log("others before if", others);
+if (others === null) {
+    console.log("NOT OTHERS");
+    localStorage.setItem("userCategories", JSON.stringify([]));
+};
+
+addedCategoryNode = document.querySelector("#add-category");
+inputCategoryNode = document.querySelector("#category-input");
+addedCategoryNode.addEventListener("submit", (event) => {
+    event.preventDefault()
+    const formData = new FormData(addedCategoryNode);
+    const categoryName = formData.get("category-name");
+    inputCategoryNode.value = "";
+    addOthersCategory(categoryName);
+});
+
+function addOthersCategory(categoryName) {
+    const categoryNode = categoryTemplate.content.cloneNode(true);
+    const titleNode = categoryNode.querySelector(".category-title");
+    titleNode.textContent = categoryName;
+    const img = categoryNode.querySelector("img");
+    img.remove();
+    othersNode.appendChild(categoryNode);
+    const categories = JSON.parse(localStorage.getItem("userCategories"));
+    categories.push({title: {name: categoryName, image: ""}, subContent: []});
+    localStorage.setItem("userCategories", JSON.stringify(categories));
+};
+
+const categories = JSON.parse(localStorage.getItem("userCategories"));
+console.log(categories);
+addContent(categories, othersNode, "others");
 
 function updateCountdown(resetTime, type) {
     const daysNode = document.querySelector(`#${type}-days`);
