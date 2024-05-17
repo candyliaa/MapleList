@@ -123,9 +123,7 @@ addContent(weekliesThurs, weekliesThursNode, "weekly-thurs");
 addContent(weekliesMon, weekliesMonNode, "weekly-mon");
 
 let others = JSON.parse(localStorage.getItem("userCategories"));
-console.log("others before if", others);
 if (others === null) {
-    console.log("NOT OTHERS");
     localStorage.setItem("userCategories", JSON.stringify([]));
 };
 
@@ -152,7 +150,6 @@ function addOthersCategory(categoryName) {
 };
 
 const categories = JSON.parse(localStorage.getItem("userCategories"));
-console.log(categories);
 addContent(categories, othersNode, "others");
 
 function updateCountdown(resetTime, type) {
@@ -165,7 +162,7 @@ function updateCountdown(resetTime, type) {
     if (resetTime < now) {
         timeUntilReset = 0;
     }
-    const minutes = Math.ceil((timeUntilReset / 60) % 60);
+    let minutes = Math.ceil((timeUntilReset / 60) % 60);
     if (minutes == 60) {
         minutes = 59;
     }
