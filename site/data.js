@@ -115,14 +115,16 @@ function updateCountdown(resetTime, type) {
     const daysNode = document.querySelector(`#${type}-days`);
     const hoursNode = document.querySelector(`#${type}-hours`);
     const minutesNode = document.querySelector(`#${type}-minutes`);
-    const secondsNode = document.querySelector(`#${type}-seconds`);
 
     const now = new Date();
     let timeUntilReset = Math.floor((resetTime - now) / 1000);
     if (resetTime < now) {
         timeUntilReset = 0;
     }
-    const minutes = Math.floor((timeUntilReset / 60) % 60);
+    const minutes = Math.ceil((timeUntilReset / 60) % 60);
+    if (minutes == 60) {
+        minutes = 59;
+    }
     const hours = Math.floor(timeUntilReset / 60 / 60) % 24;
     const days = Math.floor(timeUntilReset / 60 / 60 / 24);
 
@@ -149,20 +151,30 @@ setInterval(() => {
     lastTimeUntilDailyReset = timeTillReset
 
     const thursReset = new Date();
-    thursReset.setDate(thursReset.getDate() + 5 - thursReset.getDay());
+    thursReset.setUTCDate(thursReset.getUTCDate() + 4 - thursReset.getUTCDay());
     thursReset.setUTCHours(0, 0, 0, 0);
+    if (thursReset < Date.now()) {
+        let temp = thursReset.getUTCDate();
+        thursReset.setUTCDate(temp + 7);
+    }
     timeTillReset = updateCountdown(thursReset, "weekly1");
     if (timeTillReset > lastTimeUntilThursReset) {
         clearState("weekly-thurs");
     }
+    lastTimeUntilThursReset = timeTillReset
     
     const monReset = new Date();
-    monReset.setDate(monReset.getDate() + 8 - monReset.getDay());
+    monReset.setUTCDate(monReset.getUTCDate() + 1 - monReset.getUTCDay());
     monReset.setUTCHours(0, 0, 0, 0);
+    if (monReset < Date.now()) {
+        let temp = monReset.getUTCDate();
+        monReset.setUTCDate(temp + 7);
+    }
     timeTillReset = updateCountdown(monReset, "weekly2");
     if (timeTillReset > lastTimeUntilMonReset) {
         clearState("weekly-mon");
     }
+    lastTimeUntilMonReset = timeTillReset
 
 }, 500);
 
